@@ -11,5 +11,9 @@ class ShopSerializer(serializers.ModelSerializer):
 class VisitSerializer(serializers.ModelSerializer):
     class Meta:
         model = Visit
-        fields = "__all__"
-        read_only_fields = ("created_at",  "id")
+        fields = ("longitude", "latitude", "shop")
+
+
+class VisitResponseSerializer(VisitSerializer):
+    class Meta(VisitSerializer.Meta):
+        fields = ("created_at", "id")

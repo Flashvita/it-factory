@@ -8,8 +8,12 @@ from drf_spectacular.utils import (
     OpenApiTypes
 )
 
-from .models import Shop
-from .serializers import ShopSerializer, VisitSerializer
+from .models import Shop, Visit
+from .serializers import (
+    ShopSerializer,
+    VisitSerializer,
+    VisitResponseSerializer
+)
 
 
 @extend_schema(
@@ -49,7 +53,7 @@ class ShopListApiView(generics.ListAPIView):
             )
         ],
         responses={
-            "201": VisitSerializer,
+            "201": VisitResponseSerializer,
             "400": OpenApiResponse(
                 description="Error message"
             ),
@@ -67,8 +71,11 @@ class VisitCreateApiView(views.APIView):
             if serializer.validated_data["shop"].worker.phone_number != phone_number:
                 raise Exception("Worker must be working in shop")
 
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
+            visit = Visit.objects.create(**serializer.validated_data)
+            return Response(
+                VisitResponseSerializer(visit).data,
+                status=status.HTTP_201_CREATED
+            )
         except Exception as e:
             return Response(
                 {"message": f"{e}"},
