@@ -1,11 +1,11 @@
 #### Тестовое задание компании ItFactory
 
 ### Clone:
-    git clone https://github.com/Flashvita/it-factory.git
+    git clone -b review https://github.com/Flashvita/it-factory.git
 
 ### Run with docker compose:
     .env поместить в рабочую директорию(где manage.py, пример example.env)
-    docker compose build --up
+    docker compose up --build
     docker compose -it <container_id> bash
     python manage.py createsuperuser
 
